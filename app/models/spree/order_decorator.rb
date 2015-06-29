@@ -3,7 +3,9 @@ module SpreeStoreCredits::OrderDecorator
     base.state_machine.before_transition to: :confirm, do: :add_store_credit_payments
     base.state_machine.after_transition to: :confirm, do: :create_gift_cards
 
-    base.prepend(InstanceMethods)
+    base.class_eval do
+      prepend(InstanceMethods)
+    end
   end
 
   module InstanceMethods
@@ -132,4 +134,6 @@ module SpreeStoreCredits::OrderDecorator
   end
 end
 
-Spree::Order.include SpreeStoreCredits::OrderDecorator
+Spree::Order.class_eval do
+  include SpreeStoreCredits::OrderDecorator
+end

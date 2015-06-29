@@ -1,7 +1,9 @@
 module SpreeStoreCredits::PaymentMethodDecorator
 
   def self.included(base)
-    base.prepend(InstanceMethods)
+    base.class_eval do
+      prepend(InstanceMethods)
+    end
   end
 
   module InstanceMethods
@@ -11,4 +13,6 @@ module SpreeStoreCredits::PaymentMethodDecorator
   end
 end
 
-Spree::PaymentMethod.include SpreeStoreCredits::PaymentMethodDecorator
+Spree::PaymentMethod.class_eval do
+  include SpreeStoreCredits::PaymentMethodDecorator
+end

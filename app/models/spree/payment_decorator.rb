@@ -4,7 +4,9 @@ module SpreeStoreCredits::PaymentDecorator
     base.scope :store_credits, -> { base.where(source_type: Spree::StoreCredit.to_s) }
     base.scope :not_store_credits, -> { base.where(base.arel_table[:source_type].not_eq(Spree::StoreCredit.to_s).or(base.arel_table[:source_type].eq(nil))) }
     base.after_create :create_eligible_credit_event
-    base.prepend(InstanceMethods)
+    base.class_eval do
+      prepend(InstanceMethods)
+    end
   end
 
   module InstanceMethods
@@ -43,4 +45,6 @@ module SpreeStoreCredits::PaymentDecorator
   end
 end
 
-Spree::Payment.include SpreeStoreCredits::PaymentDecorator
+Spree::Payment.class_eval do
+  include SpreeStoreCredits::PaymentDecorator
+end

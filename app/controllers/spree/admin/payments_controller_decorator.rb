@@ -32,4 +32,6 @@ module SpreeStoreCredits::AdminPaymentsControllerDecorator
   end
 end
 
-Spree::Admin::PaymentsController.prepend SpreeStoreCredits::AdminPaymentsControllerDecorator
+Spree::Admin::PaymentsController.class_eval do
+  prepend SpreeStoreCredits::AdminPaymentsControllerDecorator
+end

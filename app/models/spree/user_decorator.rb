@@ -3,7 +3,9 @@ module Spree::UserDecorator
     base.has_many :store_credits, -> { includes(:credit_type) }
     base.has_many :store_credit_events, through: :store_credits
 
-    base.prepend(InstanceMethods)
+    base.class_eval do
+      prepend(InstanceMethods)
+    end
   end
 
   module InstanceMethods
@@ -13,4 +15,6 @@ module Spree::UserDecorator
   end
 end
 
-Spree::User.include(Spree::UserDecorator)
+Spree::User.class_eval do
+  include(Spree::UserDecorator)
+end
