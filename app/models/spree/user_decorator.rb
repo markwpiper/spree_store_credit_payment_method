@@ -12,6 +12,10 @@ module Spree::UserDecorator
     def total_available_store_credit
       store_credits.reload.to_a.sum{ |credit| credit.amount_remaining }
     end
+
+    def display_total_available_store_credit
+      Spree::Money.new(total_available_store_credit)
+    end
   end
 end
 
