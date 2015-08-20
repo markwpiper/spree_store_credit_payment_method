@@ -60,13 +60,13 @@ class Spree::VirtualGiftCard < ActiveRecord::Base
   end
 
   def generate_unique_redemption_code
-    redemption_code = Spree::RedemptionCodeGenerator.generate_redemption_code
+    redemption_code = nil
 
-    if duplicate_redemption_code?(redemption_code)
-      generate_unique_redemption_code
-    else
-      redemption_code
+    while redemption_code.nil? || duplicate_redemption_code?(redemption_code)
+      redemption_code = Spree::RedemptionCodeGenerator.generate_redemption_code
     end
+
+    redemption_code
   end
 
   def duplicate_redemption_code?(redemption_code)
