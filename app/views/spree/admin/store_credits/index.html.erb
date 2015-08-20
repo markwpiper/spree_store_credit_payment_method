@@ -11,9 +11,11 @@
 <% if @store_credits.any? %>
   <table>
     <thead>
-      <th><%= Spree.t("admin.store_credits.credited_html_header").html_safe %></th>
-      <th><%= Spree.t("admin.store_credits.used_html_header").html_safe %></th>
       <th><%= Spree.t("admin.store_credits.type_html_header").html_safe %></th>
+      <th><%= Spree.t("admin.store_credits.credited_html_header").html_safe %></th>
+      <th><%= Spree.t("admin.store_credits.authorized_html_header").html_safe %></th>
+      <th><%= Spree.t("admin.store_credits.used_html_header").html_safe %></th>
+      <th><%= Spree.t("admin.store_credits.remaining_html_header").html_safe %></th>
       <th><%= Spree.t("admin.store_credits.created_by") %></th>
       <th><%= Spree.t("admin.store_credits.issued_on") %></th>
       <th data-hook="admin_store_credits_index_header_actions" class="actions"></th>
@@ -22,13 +24,19 @@
       <% @store_credits.each do |store_credit| %>
         <tr>
           <td class='align-center'>
-            <span><%= store_credit.display_amount.to_html %></span>
-          </td>
-          <td class='align-center'>
-            <span><%= store_credit.display_amount_used.to_html %></span>
-          </td>
-          <td class='align-center'>
             <span><%= store_credit.category_name %></span>
+          </td>
+          <td class='align-center'>
+            <span><%= store_credit.display_amount %></span>
+          </td>
+          <td class='align-center'>
+            <span><%= store_credit.display_amount_authorized %></span>
+          </td>
+          <td class='align-center'>
+            <span><%= store_credit.display_amount_used %></span>
+          </td>
+          <td class='align-center'>
+            <span><%= store_credit.display_amount_remaining %></span>
           </td>
           <td>
             <span><%= store_credit.created_by_email %></span>
@@ -44,6 +52,25 @@
           </td>
         </tr>
       <% end %>
+
+    <tr>
+      <th>Total</th>
+      <th class='align-center'>
+        <span><%= @user.display_total_credited_store_credit %></span>
+      </th>
+      <th class='align-center'>
+        <span><%= @user.display_total_authorized_store_credit %></span>
+      </th>
+      <th class='align-center'>
+        <span><%= @user.display_total_used_store_credit %></span>
+      </th>
+      <th class='align-center'>
+        <span><%= @user.display_total_available_store_credit %></span>
+      </th>
+      <td colspan="3" class="actions" data-hook="admin_store_credits_index_row_actions">
+        &nbsp;
+      </td>
+    </tr>
     </tbody>
   </table>
 <% else %>

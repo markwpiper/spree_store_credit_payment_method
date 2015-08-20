@@ -31,15 +31,23 @@ class Spree::StoreCredit < ActiveRecord::Base
   attr_accessor :action, :action_amount, :action_originator, :action_authorization_code
 
   def display_amount
-    Spree::Money.new(amount)
+    Spree::Money.new(amount, currency: currency || 'USD')
   end
 
   def display_amount_used
-    Spree::Money.new(amount_used)
+    Spree::Money.new(amount_used, currency: currency || 'USD')
+  end
+
+  def display_amount_authorized
+    Spree::Money.new(amount_authorized, currency: currency || 'USD')
   end
 
   def amount_remaining
     amount - amount_used - amount_authorized
+  end
+
+  def display_amount_remaining
+    Spree::Money.new(amount_remaining, currency: currency || 'USD')
   end
 
   def authorize(amount, order_currency, options={})
