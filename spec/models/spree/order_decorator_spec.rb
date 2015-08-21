@@ -419,4 +419,31 @@ describe "Order" do
       subject.display_store_credit_remaining_after_capture.money.cents.should eq (amount_remaining * 100.0)
     end
   end
+
+  describe "#send_gift_card_emails" do
+
+    subject { order.send_gift_card_emails }
+
+    context "the order has gift cards" do
+      let(:gift_card) { create(:virtual_gift_card) }
+      let(:line_item) { gift_card.line_item }
+      let(:gift_card_2) { create(:virtual_gift_card, line_item: line_item) }
+      let(:order) { gift_card.line_item.order }
+
+      it "should call GiftCardMailer#send" do
+        expect(Spree::GiftCardMailer).to receive(:gift_card_email).with(gift_card).and_return(double(deliver: true))
+        expect(Spree::GiftCardMailer).to receive(:gift_card_email).with(gift_card_2).and_return(double(deliver: true))
+        subject
+      end
+    end
+
+    context "no gift cards" do
+      let(:order) { create(:order_with_line_items) }
+
+      it "should not call GiftCardMailer#send" do
+        expect(Spree::GiftCardMailer).to_not receive(:gift_card_email)
+        subject
+      end
+    end
+  end
 end

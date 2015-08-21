@@ -63,3 +63,9 @@ en:
           cannot_change_used_store_credit: "Store credit that has been claimed cannot be changed"
           amount_used_cannot_be_greater: "cannot be greater than the credited amount"
           amount_authorized_exceeds_total_credit: " exceeds the available credit"
+    gift_card_mailer:
+      gift_card_email:
+        dear_customer: "Dear customer"
+        your_gift_card_code: "Here is your gift card code"
+        gift_card_code: "Gift card code: %{code}"
+        subject: "Your gift card code"

@@ -7,6 +7,8 @@ class Spree::VirtualGiftCard < ActiveRecord::Base
   belongs_to :line_item, class_name: 'Spree::LineItem'
   before_create :set_redemption_code, unless: -> { redemption_code }
 
+  after_create :send_gift_card_email
+
 
   validates :amount, numericality: { greater_than: 0 }
   validates_uniqueness_of :redemption_code, conditions: -> { where(redeemed_at: nil) }
@@ -62,7 +64,7 @@ class Spree::VirtualGiftCard < ActiveRecord::Base
   def generate_unique_redemption_code
     redemption_code = nil
 
-    while redemption_code.nil? || duplicate_redemption_code?(redemption_code)
+    while duplicate_redemption_code?(redemption_code)
       redemption_code = Spree::RedemptionCodeGenerator.generate_redemption_code
     end
 
@@ -70,6 +72,10 @@ class Spree::VirtualGiftCard < ActiveRecord::Base
   end
 
   def duplicate_redemption_code?(redemption_code)
-    Spree::VirtualGiftCard.active_by_redemption_code(redemption_code)
+    redemption_code.blank? || Spree::VirtualGiftCard.active_by_redemption_code(redemption_code).present?
+  end
+
+  def send_gift_card_email
+    Spree::GiftCardMailer.gift_card_email(self).deliver
   end
 end
