@@ -88,7 +88,7 @@ module SpreeStoreCredits::OrderDecorator
 
       reload
       updater.update_payment_state
-      updater.persist_totals
+      updater.update_totals
     end
 
     def existing_credit_card_payment
