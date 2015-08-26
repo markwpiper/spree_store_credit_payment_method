@@ -1,12 +1,10 @@
 class Spree::StoreCreditCategory < ActiveRecord::Base
   GIFT_CARD_CATEGORY_NAME = 'Gift Card'
-  DEFAULT_NON_EXPIRING_TYPES = [GIFT_CARD_CATEGORY_NAME]
 
-  def non_expiring?
-    non_expiring_category_types.include? name
-  end
+  belongs_to :credit_type, class_name: 'Spree::StoreCreditType', :foreign_key => 'type_id'
+  delegate :non_expiring?, to: :credit_type
 
-  def non_expiring_category_types
-    DEFAULT_NON_EXPIRING_TYPES | Spree::StoreCredits::Configuration.non_expiring_credit_types
-  end
+  validates_presence_of :type_id
+  validates_presence_of :name
+  validates_uniqueness_of :name
 end
