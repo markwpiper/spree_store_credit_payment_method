@@ -1,32 +1,32 @@
-<%= render partial: 'spree/admin/shared/sub_menu' %>
-<%= render partial: 'lookup_form' %>
+<p id="notice"><%= notice %></p>
 
-<table class="index">
-  <thead>
-    <tr>
-      <th class="align-center">Redemption Code</th>
-      <th class="align-center">Amount</th>
-      <th class="align-center">Purchased by</th>
-      <th class="align-center">Purchased at</th>
-      <th class="align-center">Redeemed by</th>
-      <th class="align-center">Redeemed at</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @gift_cards.each do |gift_card| %>
-      <tr>
-        <td class="align-center"><%= gift_card.formatted_redemption_code %></td>
-        <td class="align-center"><%= number_to_currency(gift_card.amount) %></td>
-        <td class="align-center"><%= link_to "#{gift_card.purchaser.firstname} #{gift_card.purchaser.lastname}", edit_admin_user_path(gift_card.purchaser) %></td>
-        <td class="align-center"><%= gift_card.created_at.localtime.strftime("%F %I:%M%p") %></td>
-        <% if gift_card.redeemed? %>
-          <td class="align-center"><%= link_to "#{gift_card.redeemer.firstname} #{gift_card.redeemer.lastname}", edit_admin_user_path(gift_card.redeemer) %></td>
-          <td class="align-center"><%= gift_card.redeemed_at.localtime.strftime("%F %I:%M%p") %></td>
-        <% else %>
-          <td class="align-center"></td>
-          <td class="align-center"></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<p>
+  <strong>Redemption code:</strong>
+  <%= @gift_card.formatted_redemption_code %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= number_to_currency(@gift_card.amount) %>
+</p>
+
+<p>
+  <strong>Purchased by:</strong>
+  <%= link_to "#{@gift_card.purchaser.firstname || 'UnknownFirstName'} #{@gift_card.purchaser.lastname}", edit_admin_user_path(@gift_card.purchaser) %>
+  at <%= @gift_card.created_at.localtime.strftime("%F %I:%M%p") %>
+</p>
+
+<% if @gift_card.redeemed? %>
+  <p>
+    <strong>Redeemed by</strong>
+    <%= link_to "#{@gift_card.redeemer.firstname || 'UnknownFirstName'} #{@gift_card.redeemer.lastname}", edit_admin_user_path(@gift_card.redeemer) %>
+    at <%= @gift_card.redeemed_at.localtime.strftime("%F %I:%M%p") %>
+  </p>
+<% else %>
+  <p>
+    <strong>Not redeemed yet.</strong>
+  </p>
+<% end %>
+
+<%= link_to 'Edit gift_card', edit_admin_virtual_gift_card_path(@gift_card) %> |
+<%= link_to 'Back', admin_virtual_gift_cards_path %>

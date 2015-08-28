@@ -1,5 +1,5 @@
+<%= render partial: 'spree/admin/shared/sub_menu' %>
 <%= render partial: 'lookup_form' %>
-
 
 <h1>Recent gift-cards</h1>
 <table class="index">
@@ -11,23 +11,28 @@
     <th class="align-center">Purchased at</th>
     <th class="align-center">Redeemed by</th>
     <th class="align-center">Redeemed at</th>
+    <th colspan="3">&nbsp;</th>
   </tr>
   </thead>
   <tbody>
-  <% Spree::VirtualGiftCard.order('created_at DESC').limit(60).each do |gift_card| %>
+  <% @gift_cards.each do |gift_card| %>
     <tr>
       <td class="align-center"><%= gift_card.formatted_redemption_code %></td>
       <td class="align-center"><%= number_to_currency(gift_card.amount) %></td>
-      <td class="align-center"><%= link_to "#{gift_card.purchaser.firstname} #{gift_card.purchaser.lastname}", edit_admin_user_path(gift_card.purchaser) %></td>
+      <td class="align-center"><%= link_to "#{gift_card.purchaser.firstname || 'UnknownFirstName'} #{gift_card.purchaser.lastname}", edit_admin_user_path(gift_card.purchaser) %></td>
       <td class="align-center"><%= gift_card.created_at.localtime.strftime("%F %I:%M%p") %></td>
       <% if gift_card.redeemed? %>
-        <td class="align-center"><%= link_to "#{gift_card.redeemer.firstname} #{gift_card.redeemer.lastname}", edit_admin_user_path(gift_card.redeemer) %></td>
+        <td class="align-center"><%= link_to "#{gift_card.redeemer.firstname || 'UnknownFirstName'} #{gift_card.redeemer.lastname}", edit_admin_user_path(gift_card.redeemer) %></td>
         <td class="align-center"><%= gift_card.redeemed_at.localtime.strftime("%F %I:%M%p") %></td>
       <% else %>
         <td class="align-center"></td>
         <td class="align-center"></td>
       <% end %>
+      <td><%= link_to 'Edit', edit_admin_virtual_gift_card_path(gift_card) %></td>
+      <td><%= link_to 'Destroy', [:admin,gift_card], method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
   <% end %>
   </tbody>
 </table>
+
+<%= link_to 'New gift-card', new_admin_virtual_gift_card_path %>

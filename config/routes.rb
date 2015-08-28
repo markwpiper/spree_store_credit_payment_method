@@ -4,7 +4,7 @@ Spree::Core::Engine.routes.draw do
       resources :store_credits
 
       collection do
-        resources :gift_cards, only: [:index, :show]
+        resources :virtual_gift_cards, controller: 'gift_cards'
       end
     end
   end

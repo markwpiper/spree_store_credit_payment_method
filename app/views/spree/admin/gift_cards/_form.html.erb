@@ -1,0 +1,31 @@
+<%= form_for([:admin, @gift_card]) do |f| %>
+  <% if @gift_card.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@gift_card.errors.count, "error") %> prohibited this gift_card from being saved:</h2>
+
+      <ul>
+      <% @gift_card.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :amount %><br>
+    <%= f.number_field :amount %>
+  </div>
+
+  <div class="field">
+    <% @gift_card.currency ||= Spree::Config[:currency] %>
+    <%= f.label :currency %><br>
+    <%= f.text_field :currency %>
+  </div>
+
+  <% @gift_card.purchaser_id ||= spree_current_user.id %>
+  <%= f.hidden_field :purchaser_id %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
