@@ -29,7 +29,7 @@ module SpreeStoreCredits::OrderDecorator
 
       reconcile_with_credit_card(existing_credit_card_payment, remaining_total)
 
-      if payments.valid.sum(:amount) != total
+      if payments.valid.to_a.sum(&:amount) != total
         errors.add(:base, Spree.t("store_credits.errors.unable_to_fund")) and return false
       end
     end
