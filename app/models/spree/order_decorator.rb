@@ -104,11 +104,10 @@ module SpreeStoreCredits::OrderDecorator
         raise "Found unexpected payment method. Credit cards are the only other supported payment type"
       end
 
+      other_payment.update_attributes!(amount: amount)
       if amount.zero?
         other_payment.invalidate!
       else
-        other_payment.update_attributes!(amount: amount)
-      end
     end
 
     def create_store_credit_payment(payment_method, credit, amount)
