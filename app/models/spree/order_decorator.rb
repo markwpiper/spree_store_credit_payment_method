@@ -107,7 +107,7 @@ module SpreeStoreCredits::OrderDecorator
       other_payment.update_attributes!(amount: amount)
       if amount.zero?
         other_payment.invalidate!
-      else
+      end
     end
 
     def create_store_credit_payment(payment_method, credit, amount)
