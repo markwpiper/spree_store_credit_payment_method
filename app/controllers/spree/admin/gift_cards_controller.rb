@@ -25,7 +25,7 @@ class Spree::Admin::GiftCardsController < Spree::Admin::BaseController
     respond_to do |format|
       if @gift_card.save
         format.html { redirect_to [:admin,@gift_card], notice: 'Gift card was successfully created.' }
-        format.json { render action: 'show', status: :created, location: [:admin,@gift_card] }
+        format.json { render json: @gift_card, status: :created }
       else
         format.html { render action: 'new' }
         format.json { render json: @gift_card.errors, status: :unprocessable_entity }
